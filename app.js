@@ -4,6 +4,7 @@ const path = require('path');
 const logger = require('morgan');
 const passport = require('passport');
 const config = require('./config');
+require('dotenv/config');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -12,12 +13,21 @@ const postRouter = require('./routes/postRouter');
 const mongoose = require('mongoose');
 
 const url = config.mongoUrl;
+// CONNECT TO LOCAL DATABASE
 const connect = mongoose.connect(url, {
   useCreateIndex: true,
   useFindAndModify: false,
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+// CONNECT TO ONLINE DATABASE
+// const connect = mongoose.connect(process.env.DB_CONNECTION, {
+//   useCreateIndex: true,
+//   useFindAndModify: false,
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
 connect.then(
   () => console.log('Connected correctly to server'),
