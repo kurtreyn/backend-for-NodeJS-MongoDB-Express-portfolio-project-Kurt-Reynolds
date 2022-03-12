@@ -32,7 +32,7 @@ postRouter
     authenticate.verifyUser,
     authenticate.verifyAdmin,
     (req, res, next) => {
-      PostModel.deleteMany()
+      PostModel.remove()
         .then((response) => {
           res.statusCode = 200;
           res.setHeader('Content-Type', 'application/json');
