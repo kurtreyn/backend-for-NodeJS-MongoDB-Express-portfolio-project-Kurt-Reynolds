@@ -2,6 +2,7 @@ const express = require('express');
 const PostModel = require('../models/postsModel');
 const postRouter = express.Router();
 const authenticate = require('../authenticate');
+const cors = require('cors');
 
 postRouter
   .route('/')
@@ -14,7 +15,7 @@ postRouter
       })
       .catch((err) => next(err));
   })
-  .post(authenticate.verifyUser, (req, res, next) => {
+  .post(authenticate.verifyUser, cors(), (req, res, next) => {
     PostModel.create(req.body)
       .then((post) => {
         console.log('Post Created ', post);
@@ -31,6 +32,7 @@ postRouter
   .delete(
     authenticate.verifyUser,
     authenticate.verifyAdmin,
+    cors(),
     (req, res, next) => {
       PostModel.remove()
         .then((response) => {
