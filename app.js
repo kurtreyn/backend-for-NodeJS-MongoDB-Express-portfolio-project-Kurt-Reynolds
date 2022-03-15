@@ -1,9 +1,11 @@
 const createError = require('http-errors');
 const express = require('express');
+const app = express();
 const path = require('path');
 const logger = require('morgan');
 const passport = require('passport');
 const config = require('./config');
+const cors = require('cors');
 require('dotenv/config');
 
 const indexRouter = require('./routes/index');
@@ -25,19 +27,26 @@ connect.then(
   (err) => console.log(err)
 );
 
-var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'DELTE', 'UPDATE', 'PUT'],
+  })
+);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(passport.initialize());
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header({
+    'Access-Control-Allow-Origin': 'http://localhost:3001',
+    'Access-Control-Allow-Methods': ['GET', 'POST'],
+  });
   next();
 });
 app.use('/', indexRouter);
