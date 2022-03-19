@@ -51,6 +51,17 @@ router.post('/signup', cors(), (req, res) => {
   );
 });
 
+router.post('/profile', cors(), passport.authenticate('local'), (req, res) => {
+  const user = authenticate.getToken({ _id: req.user._id });
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'application/json');
+  res.json({
+    success: true,
+    token: user,
+    status: 'These are the droids you are looking for',
+  });
+});
+
 router.post('/login', cors(), passport.authenticate('local'), (req, res) => {
   const token = authenticate.getToken({ _id: req.user._id });
   res.statusCode = 200;
